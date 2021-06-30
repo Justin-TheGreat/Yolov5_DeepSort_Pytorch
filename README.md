@@ -61,7 +61,7 @@ There is a clear trade-off between model inference speed and accuracy. In order 
 you can select a Yolov5 family model for automatic download
 
 ```bash
-python3 track_mod_classes.py --source XXX --yolo_weights Concern_free_turn_weight.pt --img 640  # largest yolov5 family model
+!python3 track_mod_classes.py --source XXX --yolo_weights Concern_free_turn_weight.pt --img 640  # largest yolov5 family model
 ```
 - Video:  `--source file.mp4`
 - Webcam:  `--source 0`
