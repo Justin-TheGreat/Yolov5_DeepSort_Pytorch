@@ -112,7 +112,7 @@ def draw_boxes(img, bbox, frame_idx, myclasses ,identities=None, offset=(0, 0)):
       class_names = names[classes]
       # box text and bar
       color = compute_color_for_labels(id)
-      label = '{}{:d} class:{} {} km/hr time:{} f:{}'.format("", id,class_names , velocity, time2acc, frame_idx)
+      label = '{}{:d} class:{} {} km/hr time:{} f:{}'.format("", id,class_names , int(velocity), round(time2acc,2), frame_idx)
       t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 2, 2)[0]
       cv2.rectangle(img, (x1, y1), (x2, y2), color, 3)
       cv2.circle(img, (cen_x,cen_y), 3, color, -1)
