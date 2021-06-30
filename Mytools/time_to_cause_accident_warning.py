@@ -12,12 +12,15 @@ Original file is located at
 
 def time_to_cause_accident(speed, distance):#, obj_class, friction_coefficient=0.8, reaction_time=0.75):
   speed = speed * 1000 / 3600 #(km/hr to m/s)
+  if speed == 0:
+    time = 7
+  else:
+    time = distance/speed
   '''
   reaction_distance = reaction_time * speed
   stopping_distance = speed**2 /(2*9.8*friction_coefficient)
   safety_distance = reaction_distance + stopping_distance
   '''
-  time = distance/speed
   return time #second
 
 
