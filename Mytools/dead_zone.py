@@ -32,8 +32,8 @@ def dead_zone(a, target, theta=20):
 
   #print(f'r={r}')
 
-  y_up = math.sqrt(math.pow(r,2) - math.pow((x-r),2)) - a
-
+#   y_up = math.sqrt(math.pow(r,2) - math.pow((x-r),2)) - a
+  y_up = abs((math.pow(r,2) - math.pow((x-r),2))**0.5) - a
   y1 = y_up
 
   #print(f'y1={y1}')
