@@ -32,22 +32,36 @@ If you already cloned and forgot to use `--recurse-submodules` you can run `git 
 2. Make sure that you fulfill all the requirements: Python 3.8 or later with all [requirements.txt](https://github.com/mikel-brostrom/Yolov5_DeepSort_Pytorch/blob/master/requirements.txt) dependencies installed, including torch>=1.7. To install, run:
 
 `!pip install -r requirements.txt`
+## Upload video and weight to Google Disk
+
+```bash
+# Upload the testing file
+from google.colab import files
+uploaded = files.upload()
+```
+## Upload video and weight to Google Drive and then copy it to the directory
+You can download my pre-trained weight [here](https://drive.google.com/file/d/1cZ2f-RndPrudOTx36ELh9burXoTwBadN/view?usp=sharing).
+
+```bash
+from google.colab import drive
+drive.mount('/content/drive')
+```
+```bash
+%cp '/content/drive/MyDrive/XXXXXXXXXXXX' /content/Yolov5_DeepSort_Pytorch_SpeedEstimate # fill the "X" with the directory of the weight
+```
+```bash
+%cp '/content/drive/MyDrive/XXXXXXXXXXXX' /content/Yolov5_DeepSort_Pytorch_SpeedEstimate # fill the "X" with the directory of the video
+```
+```bash
+
+```
 
 ## Select a Yolov5 Pre-train weight
-
-
-
-
-
 There is a clear trade-off between model inference speed and accuracy. In order to make it possible to fulfill your inference speed/accuracy needs
 you can select a Yolov5 family model for automatic download
 
 ```bash
-!python3 track.py --source 0 --yolo_weights yolov5s.pt --img 640  # smallest yolov5 family model
-```
-
-```bash
-python3 track.py --source 0 --yolo_weights yolov5x6.pt --img 1280  # largest yolov5 family model
+python3 track_mod_classes.py --source XXX --yolo_weights Concern_free_turn_weight.pt --img 640  # largest yolov5 family model
 ```
 - Video:  `--source file.mp4`
 - Webcam:  `--source 0`
@@ -62,13 +76,13 @@ By default the tracker tracks all MS COCO classes.
 If you only want to track persons I recommend you to get [these weights](https://drive.google.com/file/d/1gglIwqxaH2iTvy6lZlXuAcMpd_U0GCUb/view?usp=sharing) for increased performance
 
 ```bash
-!python3 track.py --source 0 --yolo_weights yolov5/weights/crowdhuman_yolov5m.pt --classes 0  # tracks persons, only
+!python3 track_mod_classes.py --source XXX --yolo_weights Concern_free_turn_weight.pt --classes 0  # tracks persons, only
 ```
 
 If you want to track a subset of the MS COCO classes, add their corresponding index after the classes flag
 
 ```bash
-!python3 track.py --source 0 --yolo_weights yolov5s.pt --classes 16 17  # tracks cats and dogs, only
+!python3 track_mod_classes.py --source XXX --yolo_weights Concern_free_turn_weight.pt --classes 16 17  # tracks cats and dogs, only
 ```
 
 [Here](https://tech.amikelive.com/node-718/what-object-categories-labels-are-in-coco-dataset/) is a list of all the possible objects that a Yolov5 model trained on MS COCO can detect. Notice that the indexing for the classes in this repo starts at zero.
