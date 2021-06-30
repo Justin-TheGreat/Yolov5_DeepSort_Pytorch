@@ -91,6 +91,7 @@ If you want to track a subset of the MS COCO classes, add their corresponding in
 
 [Here](https://tech.amikelive.com/node-718/what-object-categories-labels-are-in-coco-dataset/) is a list of all the possible objects that a Yolov5 model trained on MS COCO can detect. Notice that the indexing for the classes in this repo starts at zero.
 
+You can find the result video under inference/output folder.
 
 ## Other information
 
