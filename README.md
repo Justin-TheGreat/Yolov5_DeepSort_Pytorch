@@ -1,8 +1,8 @@
 # Project under development
 
-Co-authored-by: allen-techguy <willie820206@gmail.com>
+Co-authored-by: allen-techguy <https://github.com/Allen-Hsiao>
 
-Co-authored-by: Joy-Wu <koy78451234@gmail.com>
+Co-authored-by: Joy-Wu <https://github.com/Joy-Wu1>
 
 
 
