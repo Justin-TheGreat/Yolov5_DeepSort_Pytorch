@@ -1,5 +1,7 @@
 # Yolov5_DeepSort_Pytorch_SpeedEstimate
 
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)]
+
 Co-authored-by: allen-techguy <https://github.com/Allen-Hsiao>
 
 Co-authored-by: Joy-Wu <https://github.com/Joy-Wu1>
