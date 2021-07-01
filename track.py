@@ -97,8 +97,8 @@ def draw_boxes(img, bbox, frame_idx, myclasses ,identities=None, offset=(0, 0)):
       loc2 = pixel_to_xy.pixel_to_xy(cen_x, cen_y,img)
 
       velocity = int(np.sqrt(((loc2[1] - loc1[1]) ** 2 + (loc2[0] - loc1[0]) ** 2)) / (1 / 30 * how_many_frame_will_detect))
-      disance = dead_zone.dead_zone(a,loc2)
-      time2acc = time_to_cause_accident_warning.time_to_cause_accident(velocity,disance)
+      distance = dead_zone.dead_zone(a,loc2)
+      time2acc = time_to_cause_accident_warning.time_to_cause_accident(velocity,distance)
       warningornot = time_to_cause_accident_warning.accident_warning(classes,time2acc)
 
       class_names = names[classes]
