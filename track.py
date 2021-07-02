@@ -74,6 +74,7 @@ def draw_boxes(img, bbox, frame_idx, myclasses ,identities=None, offset=(0, 0)):
           'hair drier', 'toothbrush']
     global np_store
     how_many_frame_will_detect = 10
+    video_frame_rate = 120
     for i, box in enumerate(bbox):
       id = int(identities[i]) if identities is not None else 0
       classes = int(myclasses[i]) if myclasses is not None else 0
@@ -96,7 +97,7 @@ def draw_boxes(img, bbox, frame_idx, myclasses ,identities=None, offset=(0, 0)):
       loc1 = pixel_to_xy.pixel_to_xy(np_store[i][2], np_store[i][3],img)
       loc2 = pixel_to_xy.pixel_to_xy(cen_x, cen_y,img)
 
-      velocity = int(np.sqrt(((loc2[1] - loc1[1]) ** 2 + (loc2[0] - loc1[0]) ** 2)) / (1 / 30 * how_many_frame_will_detect))
+      velocity = int(np.sqrt(((loc2[1] - loc1[1]) ** 2 + (loc2[0] - loc1[0]) ** 2)) / (1 / video_frame_rate * how_many_frame_will_detect))
       distance = dead_zone.dead_zone(a,loc2)
       time2acc = time_to_cause_accident_warning.time_to_cause_accident(velocity,distance)
       warningornot = time_to_cause_accident_warning.accident_warning(classes,time2acc)
