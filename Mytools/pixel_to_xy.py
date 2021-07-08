@@ -84,8 +84,7 @@ def pixel_to_xy(cen_x,cen_y,img):
     r = 1.2 + r5[3] + abs(cen_y - img.shape[0] * 0.6) * 0.070416667
     theta = 53.5 + 0.146875 * abs(cen_x - img.shape[1] * 0.2) + 90
   else:
-    r = 100
-    theta = 90
+    return None
 
 # convert cylindrical coordinate to Cartesian coordinate
 
