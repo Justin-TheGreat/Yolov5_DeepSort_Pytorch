@@ -1,4 +1,5 @@
 import sys
+
 sys.path.insert(0, './yolov5')
 
 from yolov5.utils.google_utils import attempt_download
@@ -24,10 +25,11 @@ import copy
 import math
 
 global np_store, a, exclamation
-a = 4.64 # length of car in meter
+a = 4.64  # length of car in meter
 exclamation = cv2.imread("caution_90.png")
-np_store = np.zeros((500,6))
+np_store = np.zeros((500, 6))
 palette = (2 ** 11 - 1, 2 ** 15 - 1, 2 ** 20 - 1)
+
 
 def xyxy_to_xywh(*xyxy):
     """" Calculates the relative bounding box from absolute pixel values. """
@@ -40,6 +42,7 @@ def xyxy_to_xywh(*xyxy):
     w = bbox_w
     h = bbox_h
     return x_c, y_c, w, h
+
 
 def xyxy_to_tlwh(bbox_xyxy):
     tlwh_bboxs = []
@@ -62,68 +65,83 @@ def compute_color_for_labels(label):
     return tuple(color)
 
 
-def draw_boxes(img, bbox, frame_idx, myclasses ,identities=None, offset=(0, 0)):
-    names = [ 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
-          'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
-          'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee',
-          'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard',
-          'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
-          'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch',
-          'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard', 'cell phone',
-          'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
-          'hair drier', 'toothbrush']
+def draw_boxes(img, bbox, frame_idx, myclasses, identities=None, offset=(0, 0)):
+    names = ['person', 'bicycle', 'car', 'motorcycle', 'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light',
+             'fire hydrant', 'stop sign', 'parking meter', 'bench', 'bird', 'cat', 'dog', 'horse', 'sheep', 'cow',
+             'elephant', 'bear', 'zebra', 'giraffe', 'backpack', 'umbrella', 'handbag', 'tie', 'suitcase', 'frisbee',
+             'skis', 'snowboard', 'sports ball', 'kite', 'baseball bat', 'baseball glove', 'skateboard', 'surfboard',
+             'tennis racket', 'bottle', 'wine glass', 'cup', 'fork', 'knife', 'spoon', 'bowl', 'banana', 'apple',
+             'sandwich', 'orange', 'broccoli', 'carrot', 'hot dog', 'pizza', 'donut', 'cake', 'chair', 'couch',
+             'potted plant', 'bed', 'dining table', 'toilet', 'tv', 'laptop', 'mouse', 'remote', 'keyboard',
+             'cell phone',
+             'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear',
+             'hair drier', 'toothbrush']
     global np_store
     how_many_frame_will_detect = 10
     video_frame_rate = 120
     for i, box in enumerate(bbox):
-      id = int(identities[i]) if identities is not None else 0
-      classes = int(myclasses[i]) if myclasses is not None else 0
-      x1, y1, x2, y2 = [int(i) for i in box]
-      x1 += offset[0]
-      x2 += offset[0]
-      y1 += offset[1]
-      y2 += offset[1]
-      cen_x = int((x1+x2)/2)
-      cen_y = int((y1+y2)/2)
-      if i > np_store.shape[0]:
-          np_store = np.vstack((np_store, np.zeros((500, 6))))
-          np_store[i][0] = frame_idx
-          np_store[i][1] = id
-      if (frame_idx >= how_many_frame_will_detect + 1) and (frame_idx % how_many_frame_will_detect == 0):
-          np_store[i][2] = copy.deepcopy(np_store[i][4])
-          np_store[i][3] = copy.deepcopy(np_store[i][5])
-          np_store[i][4] = cen_x
-          np_store[i][5] = cen_y
-      loc1 = pixel_to_xy.pixel_to_xy(np_store[i][2], np_store[i][3],img)
-      loc2 = pixel_to_xy.pixel_to_xy(cen_x, cen_y,img)
+        id = int(identities[i]) if identities is not None else 0
+        classes = int(myclasses[i]) if myclasses is not None else 0
+        x1, y1, x2, y2 = [int(i) for i in box]
+        x1 += offset[0]
+        x2 += offset[0]
+        y1 += offset[1]
+        y2 += offset[1]
+        cen_x = int((x1 + x2) / 2)
+        cen_y = int((y1 + y2) / 2)
+        if i > np_store.shape[0]:
+            np_store = np.vstack((np_store, np.zeros((500, 6))))
+            np_store[i][0] = frame_idx
+            np_store[i][1] = id
+        if (frame_idx >= how_many_frame_will_detect + 1) and (frame_idx % how_many_frame_will_detect == 0):
+            np_store[i][2] = copy.deepcopy(np_store[i][4])
+            np_store[i][3] = copy.deepcopy(np_store[i][5])
+            np_store[i][4] = cen_x
+            np_store[i][5] = cen_y
+        loc1 = pixel_to_xy.pixel_to_xy(np_store[i][2], np_store[i][3], img)
+        loc2 = pixel_to_xy.pixel_to_xy(cen_x, cen_y, img)
 
-      velocity = int(np.sqrt(((loc2[1] - loc1[1]) ** 2 + (loc2[0] - loc1[0]) ** 2)) / (1 / video_frame_rate * how_many_frame_will_detect))
-      distance = dead_zone.dead_zone(a,loc2)
-      time2acc = time_to_cause_accident_warning.time_to_cause_accident(velocity,distance)
-      warningornot = time_to_cause_accident_warning.accident_warning(classes,time2acc)
+        if loc2 == None or loc1 == None:
+            velocity_y = 0
+            distance = 100
+        elif (loc2[1] - loc1[1]) < 0:
+            velocity_y = (loc2[1] - loc1[1]) * (-1) / ((how_many_frame_will_detect) / video_frame_rate)
+            distance = dead_zone.dead_zone(a, loc2)
+            if (loc2[0] - loc1[0]) <= 0:
+                to_left = True 
+            else:
+                to_left = False
+        elif (loc2[1] - loc1[1]) >= 0:
+            velocity_y = 0
+            distance = dead_zone.dead_zone(a, loc2)
+            to_left = False
+            
+        time2acc = time_to_cause_accident_warning.time_to_cause_accident(velocity_y, distance)
+        warningornot = time_to_cause_accident_warning.accident_warning(classes, time2acc)
+        km_hr_v = 3.6 * velocity_y
+        class_names = names[classes]
+        # box text and bar
+        if warningornot == True and to_left == True:
+            color = (0, 0, 255)
+            if (cen_y - int(exclamation.shape[0] * 0.5)) >= 0 and (cen_x - int(exclamation.shape[1] * 0.5)) >= 0 and (
+                    cen_y + int(exclamation.shape[0] * 0.5)) <= img.shape[0] and (
+                    cen_x + int(exclamation.shape[1] * 0.5)) <= img.shape[1]:
+                alpha = (cen_y - int(exclamation.shape[0] * 0.5))
+                beta = (cen_y + int(exclamation.shape[0] * 0.5))
+                gamma = (cen_x - int(exclamation.shape[1] * 0.5))
+                zeta = (cen_x + int(exclamation.shape[1] * 0.5))
+                img[alpha:beta, gamma:zeta] = exclamation
+        else:
+            color = compute_color_for_labels(id)
+        label = '{}{} {}Km/hr {}s'.format("", class_names, int(km_hr_v),round(time2acc, 1))
+        t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 2, 2)[0]
+        cv2.rectangle(img, (x1, y1), (x2, y2), color, 3)
+        cv2.circle(img, (cen_x, cen_y), 3, color, -1)
 
-      class_names = names[classes]
-      # box text and bar
-      if warningornot == True:
-        color = (0,0,255)
-        if (cen_y-int(exclamation.shape[0]*0.5)) >= 0 and  (cen_x-int(exclamation.shape[1]*0.5)) >= 0 and (cen_y+int(exclamation.shape[0]*0.5)) <= img.shape[0] and (cen_x+int(exclamation.shape[1]*0.5)) <= img.shape[1]:
-          alpha = (cen_y-int(exclamation.shape[0]*0.5))
-          beta = (cen_y+int(exclamation.shape[0]*0.5))
-          gamma = (cen_x-int(exclamation.shape[1]*0.5))
-          zeta = (cen_x+int(exclamation.shape[1]*0.5))
-          img[alpha:beta, gamma:zeta] = exclamation
-
-      else:
-        color = compute_color_for_labels(id)
-      label = '{}{:d} class:{} {} km/hr time:{} D:{}'.format("", id,class_names , int(velocity), round(time2acc,2), round(distance,2))
-      t_size = cv2.getTextSize(label, cv2.FONT_HERSHEY_PLAIN, 2, 2)[0]
-      cv2.rectangle(img, (x1, y1), (x2, y2), color, 3)
-      cv2.circle(img, (cen_x,cen_y), 3, color, -1)
-      
-      cv2.rectangle(
-          img, (x1, y1), (x1 + t_size[0] + 3, y1 + t_size[1] + 4), color, -1)
-      cv2.putText(img, label, (x1, y1 +
-                                t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 2, [255, 255, 255], 2)
+        cv2.rectangle(
+            img, (x1, y1), (x1 + t_size[0] + 3, y1 + t_size[1] + 4), color, -1)
+        cv2.putText(img, label, (x1, y1 +
+                                 t_size[1] + 4), cv2.FONT_HERSHEY_PLAIN, 2, [255, 255, 255], 2)
     return img
 
 
@@ -131,7 +149,7 @@ def detect(opt):
     global np_store
     out, source, yolo_weights, deep_sort_weights, show_vid, save_vid, save_txt, imgsz, evaluate = \
         opt.output, opt.source, opt.yolo_weights, opt.deep_sort_weights, opt.show_vid, opt.save_vid, \
-            opt.save_txt, opt.img_size, opt.evaluate
+        opt.save_txt, opt.img_size, opt.evaluate
     webcam = source == '0' or source.startswith(
         'rtsp') or source.startswith('http') or source.endswith('.txt')
 
@@ -228,7 +246,7 @@ def detect(opt):
 
                 xywh_bboxs = []
                 confs = []
-                myclasses =det[:,-1]
+                myclasses = det[:, -1]
 
                 # Adapt detections to deep sort input format
                 for *xyxy, conf, cls in det:
@@ -244,14 +262,14 @@ def detect(opt):
                 # myclasses = torch.Tensor(myclasses)
 
                 # pass detections to deepsort
-                outputs = deepsort.update(xywhs, confss,myclasses, im0)
-                
+                outputs = deepsort.update(xywhs, confss, myclasses, im0)
+
                 # draw boxes for visualization
                 if len(outputs) > 0:
                     bbox_xyxy = outputs[:, :4]
-                    myclassesyo = outputs[:,-1]
+                    myclassesyo = outputs[:, -1]
                     identities = outputs[:, 4]
-                    draw_boxes(im0, bbox_xyxy,frame_idx,myclassesyo, identities)
+                    draw_boxes(im0, bbox_xyxy, frame_idx, myclassesyo, identities)
                     # Speedtrack(bbox_xyxy,frame_idx, identities)
                     # to MOT format
                     tlwh_bboxs = xyxy_to_tlwh(bbox_xyxy)
@@ -267,7 +285,8 @@ def detect(opt):
                             class_id = output[5]
                             with open(txt_path, 'a') as f:
                                 f.write(('%g ' * 10 + '\n') % (frame_idx, identity, bbox_top,
-                                                            bbox_left, bbox_w, bbox_h, class_id, -1, -1, -1))  # label format
+                                                               bbox_left, bbox_w, bbox_h, class_id, -1, -1,
+                                                               -1))  # label format
 
             else:
                 deepsort.increment_ages()
@@ -309,7 +328,8 @@ def detect(opt):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--yolo_weights', type=str, default='yolov5/weights/yolov5s.pt', help='model.pt path')
-    parser.add_argument('--deep_sort_weights', type=str, default='deep_sort_pytorch/deep_sort/deep/checkpoint/ckpt.t7', help='ckpt.t7 path')
+    parser.add_argument('--deep_sort_weights', type=str, default='deep_sort_pytorch/deep_sort/deep/checkpoint/ckpt.t7',
+                        help='ckpt.t7 path')
     # file/folder, 0 for webcam
     parser.add_argument('--source', type=str, default='0', help='source')
     parser.add_argument('--output', type=str, default='inference/output', help='output folder')  # output folder
